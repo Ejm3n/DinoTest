@@ -7,6 +7,8 @@ public class CompositionRoot : MonoBehaviour
     [SerializeField] private Transform projectileContainer;
     [SerializeField] private UnityInputService inputService;
     [SerializeField] private NavMeshMovementService movementService;
+    [SerializeField] private WaypointService waypointService;
+    [SerializeField] private NavMeshCharacterMover characterMover;
 
     private void Awake()
     {
@@ -20,5 +22,8 @@ public class CompositionRoot : MonoBehaviour
         IMovementService movement = movementService;
 
         var controller = new GameController(input, projectile, movement);
+
+        var waypointNav = new WaypointNavigator(waypointService, characterMover);
+        waypointNav.StartPath();
     }
 }

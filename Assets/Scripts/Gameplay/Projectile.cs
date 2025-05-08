@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] private float speed = 15f;
+    [SerializeField] private int damage = 1;
+
     private Vector3 target;
-    private float speed = 15f;
 
     public void Launch(Vector3 target)
     {
@@ -22,7 +24,11 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.collider.TryGetComponent<IDamageable>(out var damageable))
+        {
+            damageable.TakeDamage(damage);
+        }
+
         gameObject.SetActive(false);
-        // Здесь можно уведомлять о попадании
     }
 }
