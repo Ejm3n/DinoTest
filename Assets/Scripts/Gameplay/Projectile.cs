@@ -1,11 +1,17 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 15f;
-    [SerializeField] private int damage = 1;
-
+    private float speed;
+    private int damage;
     private Vector3 target;
+
+    public void Init(ProjectileConfig config)
+    {
+        speed = config.speed;
+        damage = config.damage;
+    }
 
     public void Launch(Vector3 target)
     {
