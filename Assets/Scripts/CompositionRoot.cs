@@ -2,37 +2,40 @@ using UnityEngine;
 
 public class CompositionRoot : MonoBehaviour
 {
-    [Header("Dependencies")]
+    [Header("Projectile Dependencies")]
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform projectileContainer;
     [SerializeField] private Transform shootOrigin;
+    [SerializeField] private ProjectileConfig projectileConfig;
 
+    [Header("Infrastructure")]
+    [SerializeField] private UnityTimer timer;
+
+    [Header("Gameplay Dependencies")]
+    [SerializeField] private EnemySpawner enemySpawner;
     [SerializeField] private UnityInputService inputService;
     [SerializeField] private NavMeshMovementService movementService;
     [SerializeField] private WaypointService waypointService;
     [SerializeField] private NavMeshCharacterMover characterMover;
 
-    [SerializeField] private ProjectileConfig projectileConfig;
-
     private void Awake()
     {
-        // ? ѕравильное им€ переменной Ч pool
+        // Projectile pooling
         var pool = new ObjectPool<Projectile>(projectilePrefab, 10, projectileContainer)
         {
             AutoExpand = true
         };
-
-        // ? ѕередаЄм shootOrigin, projectileConfig, и pool
         var projectileService = new ProjectileFactory(pool, shootOrigin, projectileConfig);
 
-        // ? явно указываем интерфейсы
+        // Interfaces
         IInputService input = inputService;
         IMovementService movement = movementService;
 
-        // ? »справлено им€ переменной projectile -> projectileService
-        var controller = new GameController(input, projectileService, movement);
+        // Combat flow controller
+        var combatController = new CombatStageController(
+            input, projectileService, waypointService, characterMover, enemySpawner, timer
+        );
 
-        var waypointNav = new WaypointNavigator(waypointService, characterMover);
-        waypointNav.StartPath();
+        combatController.StartGame();
     }
 }
