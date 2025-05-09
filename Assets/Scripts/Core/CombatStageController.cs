@@ -10,7 +10,9 @@ public class CombatStageController
     private readonly IEnemySpawner enemySpawner;
     private readonly ITimer timer;
     private readonly HashSet<WaypointSpawnZone> usedZones = new();
+
     private bool isCombatPhase;
+    private bool hasStarted;
 
     public CombatStageController(
         IInputService input,
@@ -33,7 +35,38 @@ public class CombatStageController
 
     public void StartGame()
     {
-        mover.MoveTo(waypoints.GetCurrent());
+        SpawnAllEnemies();
+        // Игрок ждёт тап, движение не запускается
+    }
+
+    private void SpawnAllEnemies()
+    {
+        var allZones = waypoints.GetAllSpawnZones();
+
+        foreach (var zone in allZones)
+        {
+            foreach (var entry in zone.GetSpawns())
+            {
+                enemySpawner.SpawnAt(entry.config.enemyPrefab, entry.spawnPoint.position, entry.config.health, zone);
+            }
+
+            usedZones.Add(zone);
+        }
+    }
+
+    private void OnTap(Vector3 point)
+    {
+        if (!hasStarted)
+        {
+            hasStarted = true;
+            mover.MoveTo(waypoints.GetCurrent());
+            return;
+        }
+
+        if (isCombatPhase)
+        {
+            projectile.Shoot(point);
+        }
     }
 
     private void OnWaypointReached()
@@ -41,32 +74,24 @@ public class CombatStageController
         StartCombat();
     }
 
-private void StartCombat()
+   private void StartCombat()
 {
     if (isCombatPhase) return;
+
+    var spawnZone = waypoints.GetCurrentSpawnZone();
+
+    if (spawnZone == null)
+    {
+        EndCombat();
+        return;
+    }
+
     isCombatPhase = true;
 
-   var spawnZone = waypoints.GetCurrentSpawnZone();
-if (spawnZone != null && !usedZones.Contains(spawnZone))
-{
-    foreach (var entry in spawnZone.GetSpawns())
-    {
-        enemySpawner.SpawnAt(entry.config.enemyPrefab, entry.spawnPoint.position, entry.config.health);
-    }
-
-    usedZones.Add(spawnZone);
+    // ✅ ВСЕГДА ждём, пока враги на зоне будут убиты
+    timer.WaitUntil(() => enemySpawner.AreEnemiesDeadAt(spawnZone), EndCombat);
 }
 
-
-    timer.WaitUntil(() => enemySpawner.AreAllEnemiesDead(), EndCombat);
-}
-
-
-    private void OnTap(Vector3 point)
-    {
-        if (isCombatPhase)
-            projectile.Shoot(point);
-    }
 
     private void EndCombat()
     {

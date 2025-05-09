@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class WaypointService : MonoBehaviour, IWaypointService
@@ -39,5 +40,10 @@ public WaypointSpawnZone GetCurrentSpawnZone()
     public void Reset()
     {
         index = 0;
+    }
+
+    public List<WaypointSpawnZone> GetAllSpawnZones()
+    {
+        return waypoints.Select(wp => wp.GetComponent<WaypointSpawnZone>()).ToList();
     }
 }

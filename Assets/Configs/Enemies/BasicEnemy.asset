@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BasicEnemy
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1207983600501645589, guid: 226cf7e99123bfe469d593127982feb9, type: 3}
-  health: 1
+  health: 2

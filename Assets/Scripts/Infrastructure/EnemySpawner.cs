@@ -3,35 +3,56 @@ using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour, IEnemySpawner
 {
-    [SerializeField] private Enemy enemyPrefab;
     [SerializeField] private Transform container;
 
-    private ObjectPool<Enemy> pool;
-    private readonly List<Enemy> activeEnemies = new();
+    private readonly Dictionary<Enemy, ObjectPool<Enemy>> pools = new();
+    private readonly Dictionary<WaypointSpawnZone, List<Enemy>> zoneEnemies = new();
 
-    private void Awake()
+    public void SpawnAt(Enemy prefab, Vector3 position, int hp, WaypointSpawnZone zone)
     {
-        pool = new ObjectPool<Enemy>(enemyPrefab, 10, container)
+        // Создание пула под каждый префаб
+        if (!pools.ContainsKey(prefab))
         {
-            AutoExpand = true
-        };
+            var pool = new ObjectPool<Enemy>(prefab, 5, container)
+            {
+                AutoExpand = true
+            };
+            pools[prefab] = pool;
+        }
+
+        var enemy = pools[prefab].GetFreeElement();
+        enemy.transform.position = position;
+        enemy.transform.rotation = Quaternion.identity;
+        enemy.SetHealth(hp);
+
+        // Привязка к зоне
+        if (!zoneEnemies.ContainsKey(zone))
+        {
+            zoneEnemies[zone] = new List<Enemy>();
+        }
+
+        if (!zoneEnemies[zone].Contains(enemy))
+        {
+            zoneEnemies[zone].Add(enemy);
+        }
     }
 
-    public void SpawnAt(Enemy prefab, Vector3 position, int hp)
-{
-    var enemy = pool.GetFreeElement(); // если хочешь — пул на каждый префаб
-    enemy.transform.position = position;
-    enemy.transform.rotation = Quaternion.identity;
-    enemy.SetHealth(hp); // добавим этот метод
+    public bool AreEnemiesDeadAt(WaypointSpawnZone zone)
+    {
+        if (!zoneEnemies.ContainsKey(zone))
+            return true;
 
-    if (!activeEnemies.Contains(enemy))
-        activeEnemies.Add(enemy);
-}
+        zoneEnemies[zone].RemoveAll(e => e == null || !e.IsAlive);
+        return zoneEnemies[zone].Count == 0;
+    }
 
     public bool AreAllEnemiesDead()
     {
-        // Убираем мёртвых и null-ссылки
-        activeEnemies.RemoveAll(e => e == null || !e.IsAlive);
-        return activeEnemies.Count == 0;
+        foreach (var kvp in zoneEnemies)
+        {
+            if (kvp.Value.Exists(e => e != null && e.IsAlive))
+                return false;
+        }
+        return true;
     }
 }

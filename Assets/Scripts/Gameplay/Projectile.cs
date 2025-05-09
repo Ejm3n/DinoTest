@@ -3,9 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] private float lifeTime = 5f;
+
     private float speed;
     private int damage;
-    private Vector3 target;
+    private Vector3 direction;
+    private float lifeTimer;
 
     public void Init(ProjectileConfig config)
     {
@@ -13,24 +16,28 @@ public class Projectile : MonoBehaviour
         damage = config.damage;
     }
 
-    public void Launch(Vector3 target)
+    public void Launch(Vector3 targetPosition)
     {
-        this.target = target;
+        direction = (targetPosition - transform.position).normalized;
+        lifeTimer = lifeTime;
         gameObject.SetActive(true);
     }
 
     private void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, target) < 0.1f)
+        transform.position += direction * speed * Time.deltaTime;
+
+        lifeTimer -= Time.deltaTime;
+        if (lifeTimer <= 0f)
         {
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("OnCollisionEnter" + collision.gameObject.name);
+        Debug.Log("OnCollisionEnter: " + collision.gameObject.name);
+
         if (collision.collider.TryGetComponent<IDamageable>(out var damageable))
         {
             damageable.TakeDamage(damage);

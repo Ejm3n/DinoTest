@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IWaypointService
@@ -8,4 +9,5 @@ public interface IWaypointService
     void Advance();
     void Reset();
     WaypointSpawnZone GetCurrentSpawnZone();
+    List<WaypointSpawnZone> GetAllSpawnZones();
 }

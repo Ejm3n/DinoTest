@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private Collider hurtCollider; 
+    [SerializeField] private HealthBar healthBar;
     private int currentHealth;
 
     private Rigidbody[] ragdollBodies;
@@ -34,16 +35,17 @@ public void SetHealth(int hp)
 {
     maxHealth = hp;
     currentHealth = hp;
+    healthBar?.SetHealth(currentHealth, maxHealth);
 }
 
-    public void TakeDamage(int amount)
-    {
-        currentHealth -= amount;
+public void TakeDamage(int amount)
+{
+    currentHealth -= amount;
+    healthBar?.SetHealth(currentHealth, maxHealth);
 
-        if (currentHealth <= 0)
-            Die();
-    }
-
+    if (currentHealth <= 0)
+        Die();
+}
    private void Die()
 {
     animator.enabled = false;
