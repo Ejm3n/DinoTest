@@ -51,7 +51,6 @@ public void TakeDamage(int amount)
     animator.enabled = false;
     SetRagdoll(true);
 
-    // Добавляем легкий физический толчок, чтобы "встряхнуть" рэгдолл
     foreach (var rb in ragdollBodies)
     {
         rb.AddForce(Random.onUnitSphere * 2f, ForceMode.Impulse);

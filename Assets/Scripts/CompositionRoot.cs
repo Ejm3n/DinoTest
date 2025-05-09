@@ -34,7 +34,7 @@ private CombatStageController combatController;
             input,
             projectileService,
             waypointService,
-            animatedMover, // тоже ICharacterMover
+            animatedMover,
             enemySpawner,
             timer
         );

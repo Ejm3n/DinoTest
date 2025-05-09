@@ -10,7 +10,6 @@ public class EnemySpawner : MonoBehaviour, IEnemySpawner
 
     public void SpawnAt(Enemy prefab, Vector3 position, int hp, WaypointSpawnZone zone)
     {
-        // Создание пула под каждый префаб
         if (!pools.ContainsKey(prefab))
         {
             var pool = new ObjectPool<Enemy>(prefab, 5, container)
@@ -25,7 +24,6 @@ public class EnemySpawner : MonoBehaviour, IEnemySpawner
         enemy.transform.rotation = Quaternion.identity;
         enemy.SetHealth(hp);
 
-        // Привязка к зоне
         if (!zoneEnemies.ContainsKey(zone))
         {
             zoneEnemies[zone] = new List<Enemy>();

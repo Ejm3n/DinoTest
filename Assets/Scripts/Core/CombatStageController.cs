@@ -36,7 +36,6 @@ public class CombatStageController
     public void StartGame()
     {
         SpawnAllEnemies();
-        // Игрок ждёт тап, движение не запускается
     }
 
     private void SpawnAllEnemies()
@@ -87,8 +86,7 @@ public class CombatStageController
     }
 
     isCombatPhase = true;
-
-    // ✅ ВСЕГДА ждём, пока враги на зоне будут убиты
+    
     timer.WaitUntil(() => enemySpawner.AreEnemiesDeadAt(spawnZone), EndCombat);
 }
 
