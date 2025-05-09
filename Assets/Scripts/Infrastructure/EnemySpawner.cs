@@ -22,11 +22,16 @@ public class EnemySpawner : MonoBehaviour, IEnemySpawner
         var enemy = pool.GetFreeElement();
         enemy.transform.position = position;
         enemy.transform.rotation = Quaternion.identity;
-        activeEnemies.Add(enemy);
+
+        // Только если ещё не учтён (при повторном спавне)
+        if (!activeEnemies.Contains(enemy))
+            activeEnemies.Add(enemy);
     }
 
     public bool AreAllEnemiesDead()
     {
-        return activeEnemies.TrueForAll(e => e == null || !e.IsAlive);
+        // Убираем мёртвых и null-ссылки
+        activeEnemies.RemoveAll(e => e == null || !e.IsAlive);
+        return activeEnemies.Count == 0;
     }
 }

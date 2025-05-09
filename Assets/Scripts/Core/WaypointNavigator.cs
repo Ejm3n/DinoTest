@@ -3,9 +3,9 @@ using UnityEngine;
 public class WaypointNavigator
 {
     private readonly IWaypointService waypointService;
-    private readonly ICharacterMover mover;
+    private readonly IMovementService mover;
 
-    public WaypointNavigator(IWaypointService waypointService, ICharacterMover mover)
+    public WaypointNavigator(IWaypointService waypointService, IMovementService mover)
     {
         this.waypointService = waypointService;
         this.mover = mover;
@@ -14,12 +14,12 @@ public class WaypointNavigator
     public void StartPath()
     {
         mover.MoveTo(waypointService.GetCurrent());
-        mover.OnArrived += OnArrived;
+        mover.OnReachedDestination += OnArrived;
     }
 
     private void OnArrived()
     {
-        // Здесь можно реализовать задержку/ожидание/стрельбу перед следующим шагом
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         if (waypointService.HasNext())
         {
             waypointService.Advance();
@@ -27,7 +27,7 @@ public class WaypointNavigator
         }
         else
         {
-            Debug.Log("Final waypoint reached — you can trigger level completion.");
+            Debug.Log("Final waypoint reached пїЅ you can trigger level completion.");
         }
     }
 }

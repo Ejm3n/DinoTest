@@ -2,12 +2,11 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-public class AnimatedCharacterMover : MonoBehaviour, ICharacterMover
+public class AnimatedCharacterMover : MonoBehaviour, IMovementService
 {
-    public event Action OnArrived;
+    public event Action OnReachedDestination;
 
-    [SerializeField] private CharacterAnimator characterAnimator;
+    [SerializeField] private Animator visualAnimator; 
 
     private NavMeshAgent agent;
 
@@ -19,7 +18,7 @@ public class AnimatedCharacterMover : MonoBehaviour, ICharacterMover
     public void MoveTo(Vector3 position)
     {
         agent.SetDestination(position);
-        characterAnimator?.SetMoving(true);
+        visualAnimator?.SetBool("IsMoving", true);
     }
 
     private void Update()
@@ -28,8 +27,8 @@ public class AnimatedCharacterMover : MonoBehaviour, ICharacterMover
         {
             if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
             {
-                characterAnimator?.SetMoving(false);
-                OnArrived?.Invoke();
+                visualAnimator?.SetBool("IsMoving", false);
+                OnReachedDestination?.Invoke();
             }
         }
     }

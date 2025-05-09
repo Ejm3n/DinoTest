@@ -24,12 +24,13 @@ public class Projectile : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("OnCollisionEnter" + collision.gameObject.name);
         if (collision.collider.TryGetComponent<IDamageable>(out var damageable))
         {
             damageable.TakeDamage(damage);

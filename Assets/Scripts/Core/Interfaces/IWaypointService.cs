@@ -7,4 +7,5 @@ public interface IWaypointService
     bool HasNext();
     void Advance();
     void Reset();
+    WaypointSpawnZone GetCurrentSpawnZone();
 }

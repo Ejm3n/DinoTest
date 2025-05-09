@@ -16,6 +16,7 @@ public class CompositionRoot : MonoBehaviour
     [SerializeField] private UnityInputService inputService;
     [SerializeField] private WaypointService waypointService;
     [SerializeField] private AnimatedCharacterMover animatedMover;
+private CombatStageController combatController;
 
     private void Awake()
     {
@@ -29,7 +30,7 @@ public class CompositionRoot : MonoBehaviour
         IInputService input = inputService;
         IMovementService movement = (IMovementService)animatedMover;
 
-        var combatController = new CombatStageController(
+        combatController = new CombatStageController(
             input,
             projectileService,
             waypointService,
@@ -37,7 +38,10 @@ public class CompositionRoot : MonoBehaviour
             enemySpawner,
             timer
         );
+    }
 
-        combatController.StartGame();
+    void Start()
+    {
+         combatController.StartGame();
     }
 }

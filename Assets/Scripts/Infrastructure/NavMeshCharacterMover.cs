@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class NavMeshCharacterMover : MonoBehaviour, ICharacterMover
+public class NavMeshCharacterMover : MonoBehaviour, IMovementService
 {
-    public event Action OnArrived;
+    public event Action OnReachedDestination;
 
     private NavMeshAgent agent;
 
@@ -25,7 +25,7 @@ public class NavMeshCharacterMover : MonoBehaviour, ICharacterMover
         {
             if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
             {
-                OnArrived?.Invoke();
+                OnReachedDestination?.Invoke();
             }
         }
     }

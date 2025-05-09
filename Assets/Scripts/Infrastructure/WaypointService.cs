@@ -6,7 +6,10 @@ public class WaypointService : MonoBehaviour, IWaypointService
     [SerializeField] private List<Transform> waypoints;
 
     private int index = 0;
-
+public WaypointSpawnZone GetCurrentSpawnZone()
+{
+    return waypoints[index].GetComponent<WaypointSpawnZone>();
+}
     public Vector3 GetCurrent()
     {
         return waypoints[index].position;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatStageController
@@ -5,17 +6,17 @@ public class CombatStageController
     private readonly IInputService input;
     private readonly IProjectileService projectile;
     private readonly IWaypointService waypoints;
-    private readonly ICharacterMover mover;
+    private readonly IMovementService mover;
     private readonly IEnemySpawner enemySpawner;
     private readonly ITimer timer;
-
+    private readonly HashSet<WaypointSpawnZone> usedZones = new();
     private bool isCombatPhase;
 
     public CombatStageController(
         IInputService input,
         IProjectileService projectile,
         IWaypointService waypoints,
-        ICharacterMover mover,
+        IMovementService mover,
         IEnemySpawner enemySpawner,
         ITimer timer)
     {
@@ -26,7 +27,7 @@ public class CombatStageController
         this.enemySpawner = enemySpawner;
         this.timer = timer;
 
-        mover.OnArrived += OnWaypointReached;
+        mover.OnReachedDestination += OnWaypointReached;
         input.OnTap += OnTap;
     }
 
@@ -40,17 +41,26 @@ public class CombatStageController
         StartCombat();
     }
 
-    private void StartCombat()
+private void StartCombat()
+{
+    if (isCombatPhase) return;
+    isCombatPhase = true;
+
+    var spawnZone = waypoints.GetCurrentSpawnZone();
+
+    if (spawnZone != null && !usedZones.Contains(spawnZone))
     {
-        isCombatPhase = true;
+        foreach (var pos in spawnZone.GetSpawnPositions())
+        {
+            enemySpawner.SpawnAt(pos); // ✅ только один раз
+        }
 
-        Vector3 basePoint = waypoints.GetCurrent() + Vector3.forward * 2f;
-        enemySpawner.SpawnAt(basePoint);
-        enemySpawner.SpawnAt(basePoint + Vector3.left * 2f);
-        enemySpawner.SpawnAt(basePoint + Vector3.right * 2f);
-
-        timer.WaitUntil(() => enemySpawner.AreAllEnemiesDead(), EndCombat);
+        usedZones.Add(spawnZone);
     }
+
+    timer.WaitUntil(() => enemySpawner.AreAllEnemiesDead(), EndCombat);
+}
+
 
     private void OnTap(Vector3 point)
     {
