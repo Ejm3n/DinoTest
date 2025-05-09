@@ -4,6 +4,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 3;
+    [SerializeField] private Collider hurtCollider; 
     private int currentHealth;
 
     private Rigidbody[] ragdollBodies;
@@ -38,21 +39,33 @@ public class Enemy : MonoBehaviour, IDamageable
             Die();
     }
 
-    private void Die()
+   private void Die()
+{
+    animator.enabled = false;
+    SetRagdoll(true);
+
+    // Добавляем легкий физический толчок, чтобы "встряхнуть" рэгдолл
+    foreach (var rb in ragdollBodies)
     {
-        animator.enabled = false;
-        SetRagdoll(true);
-        gameObject.layer = LayerMask.NameToLayer("Ignore Raycast"); // можно игнорить коллизии
+        rb.AddForce(Random.onUnitSphere * 2f, ForceMode.Impulse);
     }
 
-    private void SetRagdoll(bool enabled)
-    {
-        foreach (var rb in ragdollBodies)
-            rb.isKinematic = !enabled;
+    gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+}
 
-        foreach (var col in ragdollColliders)
-            col.enabled = enabled;
-    }
+
+   private void SetRagdoll(bool enabled)
+{
+    foreach (var rb in ragdollBodies)
+        rb.isKinematic = !enabled;
+
+    foreach (var col in ragdollColliders)
+        col.enabled = enabled;
+
+    if (hurtCollider != null)
+        hurtCollider.enabled = !enabled;
+}
+
 
     private void OnEnable()
     {
