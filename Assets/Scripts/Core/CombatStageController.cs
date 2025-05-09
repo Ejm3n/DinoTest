@@ -46,17 +46,17 @@ private void StartCombat()
     if (isCombatPhase) return;
     isCombatPhase = true;
 
-    var spawnZone = waypoints.GetCurrentSpawnZone();
-
-    if (spawnZone != null && !usedZones.Contains(spawnZone))
+   var spawnZone = waypoints.GetCurrentSpawnZone();
+if (spawnZone != null && !usedZones.Contains(spawnZone))
+{
+    foreach (var entry in spawnZone.GetSpawns())
     {
-        foreach (var pos in spawnZone.GetSpawnPositions())
-        {
-            enemySpawner.SpawnAt(pos); // ✅ только один раз
-        }
-
-        usedZones.Add(spawnZone);
+        enemySpawner.SpawnAt(entry.config.enemyPrefab, entry.spawnPoint.position, entry.config.health);
     }
+
+    usedZones.Add(spawnZone);
+}
+
 
     timer.WaitUntil(() => enemySpawner.AreAllEnemiesDead(), EndCombat);
 }

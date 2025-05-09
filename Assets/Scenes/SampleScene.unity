@@ -305,10 +305,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f4f40b69ca6746b543cb1a59b6a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 1193862350}
-  - {fileID: 1606853791}
-  - {fileID: 1538823836}
+  entries:
+  - spawnPoint: {fileID: 1193862350}
+    config: {fileID: 11400000, guid: 3f245ee43097d1349b8106f846d22f55, type: 2}
+  - spawnPoint: {fileID: 1606853791}
+    config: {fileID: 11400000, guid: a9b84a68b9065184bbccdca63cc8ac79, type: 2}
+  - spawnPoint: {fileID: 1538823836}
+    config: {fileID: 11400000, guid: 3f245ee43097d1349b8106f846d22f55, type: 2}
 --- !u!1 &342246034
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,10 +833,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f4f40b69ca6746b543cb1a59b6a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 1847284447}
-  - {fileID: 1362303500}
-  - {fileID: 1506175669}
+  entries:
+  - spawnPoint: {fileID: 1847284447}
+    config: {fileID: 11400000, guid: 3f245ee43097d1349b8106f846d22f55, type: 2}
+  - spawnPoint: {fileID: 1362303500}
+    config: {fileID: 11400000, guid: a9b84a68b9065184bbccdca63cc8ac79, type: 2}
+  - spawnPoint: {fileID: 1506175669}
+    config: {fileID: 11400000, guid: 3f245ee43097d1349b8106f846d22f55, type: 2}
 --- !u!1 &803713811
 GameObject:
   m_ObjectHideFlags: 0
@@ -1716,10 +1722,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f4f40b69ca6746b543cb1a59b6a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 1220544901}
-  - {fileID: 23771361}
-  - {fileID: 1796467965}
+  entries:
+  - spawnPoint: {fileID: 1220544901}
+    config: {fileID: 11400000, guid: 3f245ee43097d1349b8106f846d22f55, type: 2}
+  - spawnPoint: {fileID: 23771361}
+    config: {fileID: 11400000, guid: a9b84a68b9065184bbccdca63cc8ac79, type: 2}
+  - spawnPoint: {fileID: 1796467965}
+    config: {fileID: 11400000, guid: 3f245ee43097d1349b8106f846d22f55, type: 2}
 --- !u!1 &1796467964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1798,10 +1807,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f4f40b69ca6746b543cb1a59b6a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 1551912153}
-  - {fileID: 150558880}
-  - {fileID: 2088320993}
+  entries:
+  - spawnPoint: {fileID: 1551912153}
+    config: {fileID: 11400000, guid: 3f245ee43097d1349b8106f846d22f55, type: 2}
+  - spawnPoint: {fileID: 150558880}
+    config: {fileID: 11400000, guid: a9b84a68b9065184bbccdca63cc8ac79, type: 2}
+  - spawnPoint: {fileID: 2088320993}
+    config: {fileID: 11400000, guid: 3f245ee43097d1349b8106f846d22f55, type: 2}
 --- !u!1001 &1817032314
 PrefabInstance:
   m_ObjectHideFlags: 0

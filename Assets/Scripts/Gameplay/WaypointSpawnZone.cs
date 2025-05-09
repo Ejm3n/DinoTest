@@ -1,13 +1,19 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class WaypointSpawnZone : MonoBehaviour
 {
-    [SerializeField] private List<Transform> spawnPoints;
-
-    public IEnumerable<Vector3> GetSpawnPositions()
+    [System.Serializable]
+    public class SpawnEntry
     {
-        foreach (var point in spawnPoints)
-            yield return point.position;
+        public Transform spawnPoint;
+        public EnemySpawnConfig config;
+    }
+
+    [SerializeField] private List<SpawnEntry> entries;
+
+    public IEnumerable<SpawnEntry> GetSpawns()
+    {
+        return entries;
     }
 }

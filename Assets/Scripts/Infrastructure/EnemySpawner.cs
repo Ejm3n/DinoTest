@@ -17,16 +17,16 @@ public class EnemySpawner : MonoBehaviour, IEnemySpawner
         };
     }
 
-    public void SpawnAt(Vector3 position)
-    {
-        var enemy = pool.GetFreeElement();
-        enemy.transform.position = position;
-        enemy.transform.rotation = Quaternion.identity;
+    public void SpawnAt(Enemy prefab, Vector3 position, int hp)
+{
+    var enemy = pool.GetFreeElement(); // если хочешь — пул на каждый префаб
+    enemy.transform.position = position;
+    enemy.transform.rotation = Quaternion.identity;
+    enemy.SetHealth(hp); // добавим этот метод
 
-        // Только если ещё не учтён (при повторном спавне)
-        if (!activeEnemies.Contains(enemy))
-            activeEnemies.Add(enemy);
-    }
+    if (!activeEnemies.Contains(enemy))
+        activeEnemies.Add(enemy);
+}
 
     public bool AreAllEnemiesDead()
     {

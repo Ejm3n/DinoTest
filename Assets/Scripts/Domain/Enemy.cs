@@ -30,6 +30,11 @@ public class Enemy : MonoBehaviour, IDamageable
         SetRagdoll(false);
         currentHealth = maxHealth;
     }
+public void SetHealth(int hp)
+{
+    maxHealth = hp;
+    currentHealth = hp;
+}
 
     public void TakeDamage(int amount)
     {

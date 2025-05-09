@@ -2319,7 +2319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd5d5e734d7bd4047aaf914e44cd1cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  maxHealth: 1
   hurtCollider: {fileID: 3104889263830789469}
 --- !u!136 &3104889263830789469
 CapsuleCollider:
